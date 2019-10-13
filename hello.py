@@ -1,22 +1,46 @@
 from easygui import *
 from playsound import *
-from pydub import AudioSegment
-import pyglet
+import pygame
+import glob
+import os
+
+
+song = os.listdir("songs")
+songs = []
+
+for i in song:
+    if i[-3:] == "mp3":
+        songs.append(i)
+currentsong = ""
+
 
 msg = "song:"
+image = "log.gif"
+btns = ["play","paus", "quit","select song", "+","-"]
 
-btns = ["paus", "play", "quit"]
+volume = 1
 
-music = pyglet.resource.media('1.mp3')
-
-
-
+pygame.mixer.init()
 while True:
-    flag1 = buttonbox(msg,choices = btns)
+    flag1 = buttonbox(msg ,choices = btns,image = image , title = "$GANGSTAMP3$")
+
     if flag1 == "play":
-        music.play()
+        pygame.mixer.music.unpause()
+        print(pygame.mixer.music.get_volume())
     if flag1 == "paus":
+        pygame.mixer.music.pause()
         print("music is now paused")
+    if flag1 == "select song":
+        selectedsong =choicebox("select a song","playlist",songs)
+        pygame.mixer.music.load("songs/" + selectedsong)
+        msg = "song: " + selectedsong
+        pygame.mixer.music.play()
+    if flag1 == "+":
+        volume = volume + 0.2
+        pygame.mixer.music.set_volume(volume)
+    if flag1 == "-":
+        volume = volume - 0.2
+        pygame.mixer.music.set_volume(volume)
     if flag1 == "quit":
         exit(0)
 
