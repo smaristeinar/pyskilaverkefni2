@@ -1,7 +1,5 @@
 from easygui import *
-from playsound import *
 import pygame
-import glob
 import os
 
 
